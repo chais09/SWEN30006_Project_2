@@ -2,6 +2,7 @@ package cribbage;
 
 import ch.aplu.jcardgame.Card;
 import ch.aplu.jcardgame.Hand;
+
 import java.util.ArrayList;
 
 public class CalculateFifteen extends Calculation{
@@ -11,38 +12,43 @@ public class CalculateFifteen extends Calculation{
 
     @Override
     public int calculate() {
+        int score = 0;
         final int aimNumber = 15;
-        int totalScore = 0;
-        ArrayList<Card> cardList = hand.getCardList();
-        for(int i = 0; i<cardList.size(); i++) {
-            ArrayList<Integer> list = new ArrayList<Integer>();
-            int sum = cardList.get(i).getValue();
-            list.add(i);
-            for (int j = i+1; j<cardList.size(); j++){
-                if(sum+cardList.get(j).getValue() > aimNumber){
-                    continue;
-                }else if(sum+cardList.get(j).getValue() <= aimNumber){
-                    list.add(j);
-                    sum += cardList.get(j).getValue();
-                }
-                if(sum == 15){
-                    totalScore += 2;
-                    list.remove(list.size()-1);
-                }
-                if(j == cardList.size()-1){
-
-                }
+        ArrayList<Integer> current = new ArrayList<Integer>();
+        ArrayList<Integer> input = new ArrayList<Integer>();
+        for(Card card : hand.getCardList()){
+            input.add(card.getValue());
+        }
+        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+        findCombinations(input, current, result, 0, input.size(), input.size());
+        for(ArrayList<Integer> combination: result){
+            if(sum(combination) == aimNumber){
+                score += 2;
             }
         }
-        return 0;
+        return score;
     }
-    private ArrayList<Integer> getAllCombination(ArrayList<Integer> list, ArrayList<Card> cardList, int size){
-        if(size == 1){
-            for(int i =0; i<cardList.size(); i++){
-                list.set(i, cardList.get(i).getValue());
-            }
-        }else{
-
+    private void findCombinations(ArrayList<Integer> input, ArrayList<Integer> current,ArrayList<ArrayList<Integer>> result
+            , int i, int n, int k) {
+        if (k > n) {
+            return;
         }
+        if (k == 0) {
+            return;
+        }
+        for (int j = i; j < n; j++) {
+            current.add(input.get(j));
+            result.add((ArrayList<Integer>) current.clone());
+            findCombinations(input, current ,result , j + 1, n, k - 1);
+            current.remove(current.size()-1);
+        }
+
+    }
+    private int sum(ArrayList<Integer> in){
+        int result = 0;
+        for(int i : in){
+            result += i;
+        }
+        return result;
     }
 }

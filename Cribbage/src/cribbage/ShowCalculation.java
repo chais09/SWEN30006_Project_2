@@ -19,7 +19,8 @@ public class ShowCalculation extends Calculation{
         newHand.insert(newCard.getSuit(), newCard.getRank(), false);
         CalculatePair pair = new CalculatePair(newHand);
         CalculateRunShow run = new CalculateRunShow(newHand);
+        CalculateFifteen fifteen = new CalculateFifteen(newHand);
 
-        return 0;
+        return jack.calculate() + flush.calculate() + pair.calculate() + run.calculate() + fifteen.calculate();
     }
 }
