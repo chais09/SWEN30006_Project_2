@@ -282,6 +282,7 @@ public class Cribbage extends CardGame {
     cribbage = this;
     setTitle("Cribbage (V" + version + ") Constructed for UofM SWEN30006 with JGameGrid (www.aplu.ch)");
     setStatusText("Initializing...");
+    setSimulationPeriod(1);
     initScore();
 
 	  Hand pack = deck.toHand(false);
@@ -335,6 +336,7 @@ public class Cribbage extends CardGame {
 			  SEED = new Random().nextInt(); // so randomise
 		  }
 	  }
+	  Logging.getInstance().addToLog(String.format("seed,%d",SEED));
 	  random = new Random(SEED);
 
 	  // Control Player Types
@@ -344,7 +346,8 @@ public class Cribbage extends CardGame {
 	  clazz = Class.forName(cribbageProperties.getProperty("Player1"));
 	  players[1] = (IPlayer) clazz.getConstructor().newInstance();
 	  // End properties
-
+	  Logging.getInstance().addToLog(String.format("%s,P0",cribbageProperties.getProperty("Player0")));
+	  Logging.getInstance().addToLog(String.format("%s,P1",cribbageProperties.getProperty("Player1")));
 	  new Cribbage();
   }
 
