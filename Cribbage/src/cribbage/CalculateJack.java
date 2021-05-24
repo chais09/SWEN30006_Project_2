@@ -10,7 +10,7 @@ public class CalculateJack extends Calculation{
     }
 
     @Override
-    public int calculate() {
+    public int calculate(IPlayer player, int[] scores) {
         Enum start = starter.getCardList().get(0).getSuit();
         if(hand.getCard(start, Cribbage.Rank.JACK) != null){
             return 1;

@@ -8,7 +8,8 @@ public class CalculateRunShow extends Calculation{
     }
 
     @Override
-    public int calculate() {
+    public int calculate(IPlayer player, int[] scores) {
+        System.out.println("calculate run\n");
         if(hand.getSequences(5).size() != 0){
             return hand.getSequences(5).size();
         }else if(hand.getSequences(4).size() != 0){

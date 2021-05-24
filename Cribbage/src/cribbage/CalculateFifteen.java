@@ -11,24 +11,33 @@ public class CalculateFifteen extends Calculation{
     }
 
     @Override
-    public int calculate() {
+    public int calculate(IPlayer player, int[] scores) {
+
         int score = 0;
         final int aimNumber = 15;
-        ArrayList<Integer> current = new ArrayList<Integer>();
-        ArrayList<Integer> input = new ArrayList<Integer>();
+        ArrayList<String> strings = new ArrayList<>();
+        ArrayList<Card> current = new ArrayList<>();
+        ArrayList<Card> input = new ArrayList<>();
         for(Card card : hand.getCardList()){
-            input.add(card.getValue());
+            input.add(card);
         }
-        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+        ArrayList<ArrayList<Card>> result = new ArrayList<>();
         findCombinations(input, current, result, 0, input.size(), input.size());
-        for(ArrayList<Integer> combination: result){
+        for(ArrayList<Card> combination: result){
             if(sum(combination) == aimNumber){
+                for(Card card : combination){
+                    String s = String.format("%s", super.canonical(card));
+                    strings.add(s);
+                }
                 score += 2;
+                scores[player.id] += 2;
+                String format = String.format("score,P%d,%d,%d,fifteen,%s",player.id,scores[player.id],strings.size(),strings);
+                Logging.getInstance().addToLog(format);
             }
         }
         return score;
     }
-    private void findCombinations(ArrayList<Integer> input, ArrayList<Integer> current,ArrayList<ArrayList<Integer>> result
+    private void findCombinations(ArrayList<Card> input, ArrayList<Card> current,ArrayList<ArrayList<Card>> result
             , int i, int n, int k) {
         if (k > n) {
             return;
@@ -38,16 +47,16 @@ public class CalculateFifteen extends Calculation{
         }
         for (int j = i; j < n; j++) {
             current.add(input.get(j));
-            result.add((ArrayList<Integer>) current.clone());
+            result.add((ArrayList<Card>) current.clone());
             findCombinations(input, current ,result , j + 1, n, k - 1);
             current.remove(current.size()-1);
         }
 
     }
-    private int sum(ArrayList<Integer> in){
+    private int sum(ArrayList<Card> in){
         int result = 0;
-        for(int i : in){
-            result += i;
+        for(Card i : in){
+            result += i.getValue();
         }
         return result;
     }

@@ -8,11 +8,13 @@ public class PlayCalculation extends Calculation{
     }
 
     @Override
-    public int calculate() {
-        int result = 0;
-        CalculateTotal total = new CalculateTotal(hand);
+    public int calculate(IPlayer player, int[] scores) {
+        int result = scores[player.id];
         CalculateRunPlay run = new CalculateRunPlay(hand);
-        CalculatePair pair = new CalculatePair(hand);
-        return result + total.calculate() + run.calculate() + pair.calculate();
+        CalculatePairPlay pair = new CalculatePairPlay(hand);
+        result = result + run.calculate(player, scores) + pair.calculate(player, scores);
+        scores[player.id] = result;
+        System.out.printf("update score: %d\n", result);
+        return result;
     }
 }

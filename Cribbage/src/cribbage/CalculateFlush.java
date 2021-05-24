@@ -10,7 +10,7 @@ public class CalculateFlush extends Calculation{
     }
 
     @Override
-    public int calculate() {
+    public int calculate(IPlayer player, int[] scores) {
         if(hand.getNumberOfCardsWithSuit(Cribbage.Suit.SPADES) > 3){
             if(starter.getNumberOfCardsWithSuit(Cribbage.Suit.SPADES) == 1){
                 return 5;
@@ -34,4 +34,6 @@ public class CalculateFlush extends Calculation{
         }
         return 0;
     }
+
+
 }

@@ -8,17 +8,14 @@ public class CalculateRunPlay extends Calculation{
     }
 
     @Override
-    public int calculate() {
-        if(hand.getSequences(7).size() != 0) {
-            return hand.getSequences(7).size();
-        }else if(hand.getSequences(6).size() != 0) {
-            return hand.getSequences(6).size();
-        }else if(hand.getSequences(5).size() != 0){
-            return hand.getSequences(5).size();
-        }else if(hand.getSequences(4).size() != 0){
-            return hand.getSequences(4).size();
-        }else if(hand.getSequences(3).size() != 0){
-            return hand.getSequences(3).size();
+    public int calculate(IPlayer player, int[] scores) {
+        System.out.println("calculate run\n");
+        for (int i = 7;i>2;i--){
+            if(hand.getSequences(i).size() != 0){
+                scores[player.id] += i;
+                Logging.getInstance().addToLog(String.format("score,P%d,%d,%d,run%d",player.id,scores[player.id],i,i));
+                return i;
+            }
         }
         return 0;
     }

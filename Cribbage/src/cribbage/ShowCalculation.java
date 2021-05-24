@@ -11,16 +11,16 @@ public class ShowCalculation extends Calculation{
     }
 
     @Override
-    public int calculate() {
+    public int calculate(IPlayer player, int[] scores) {
         CalculateJack jack = new CalculateJack(hand,starter);
         CalculateFlush flush = new CalculateFlush(hand,starter);
         Card newCard= starter.getCardList().get(0);
         Hand newHand = hand;
-        newHand.insert(newCard.getSuit(), newCard.getRank(), false);
-        CalculatePair pair = new CalculatePair(newHand);
+        newHand.insert(newCard.clone(), false);
+        CalculatePairShow pair = new CalculatePairShow(newHand);
         CalculateRunShow run = new CalculateRunShow(newHand);
         CalculateFifteen fifteen = new CalculateFifteen(newHand);
 
-        return jack.calculate() + flush.calculate() + pair.calculate() + run.calculate() + fifteen.calculate();
+        return jack.calculate(player, scores) + flush.calculate(player, scores) + pair.calculate(player, scores) + run.calculate(player, scores) + fifteen.calculate(player, scores);
     }
 }
