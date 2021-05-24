@@ -1,3 +1,4 @@
 .project
 ./Cribbage/out
 ./Cribbage/.idea
+./Cribbage/cribbage.log
