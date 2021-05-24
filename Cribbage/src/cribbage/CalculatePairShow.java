@@ -20,7 +20,7 @@ public class CalculatePairShow extends Calculation {
                 for (Card c : h.getCardList()){
                     strings.add(canonical(c));
                 }
-                Logging.getInstance().addToLog(String.format("score,P%d,%d,12,pair4,%s",player.id,scores[player.id],strings));
+                Logging.getInstance().addToLog(String.format("score,P%d,%d,12,pair4,%s",player.id,scores[player.id],strings.toString().replaceAll(" ", "")));
             }
             return 12;
         }
@@ -31,7 +31,7 @@ public class CalculatePairShow extends Calculation {
                 for (Card c : h.getCardList()) {
                     strings.add(canonical(c));
                 }
-                Logging.getInstance().addToLog(String.format("score,P%d,%d,6,pair3", player.id, scores[player.id]));
+                Logging.getInstance().addToLog(String.format("score,P%d,%d,6,pair3,%s", player.id, scores[player.id],strings.toString().replaceAll(" ", "")));
             }
             return 6;
         }else if(hand.getPairs().size() != 0){
@@ -41,7 +41,7 @@ public class CalculatePairShow extends Calculation {
                 for (Card c : h.getCardList()) {
                     strings.add(canonical(c));
                 }
-                Logging.getInstance().addToLog(String.format("score,P%d,%d,2,pair2", player.id, scores[player.id]));
+                Logging.getInstance().addToLog(String.format("score,P%d,%d,2,pair2,%s", player.id, scores[player.id],strings.toString().replaceAll(" ", "")));
             }
             return 2;
         }

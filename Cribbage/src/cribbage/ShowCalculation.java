@@ -14,7 +14,7 @@ public class ShowCalculation extends Calculation{
     public int calculate(IPlayer player, int[] scores) {
         CalculateJack jack = new CalculateJack(hand,starter);
         CalculateFlush flush = new CalculateFlush(hand,starter);
-        Card newCard= starter.getCardList().get(0);
+        Card newCard= starter.getCardList().get(0).clone();
         Hand newHand = hand;
         newHand.insert(newCard.clone(), false);
         CalculatePairShow pair = new CalculatePairShow(newHand);

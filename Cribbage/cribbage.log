@@ -17,3 +17,4 @@ score,P1,4,2,thirtyone
 play,P0,10,KH
 play,P1,20,TD
 score,P1,5,1,go
+score,P1,7,2,pair2,[AD,AH]

@@ -312,11 +312,14 @@ public class Cribbage extends CardGame {
 
 	void showHandsCrib() {
 		ShowCalculation showPlayerZero =  new ShowCalculation(initHands[0], starter);
+		showPlayerZero.calculate(players[0], scores);
 		// score player 0 (non dealer)
 		// score player 1 (dealer)
 		ShowCalculation showPlayerOne =  new ShowCalculation(initHands[1], starter);
+		showPlayerOne.calculate(players[1], scores);
 		// score crib (for dealer)
 		ShowCalculation showPlayerDealer =  new ShowCalculation(crib,starter);
+		showPlayerDealer.calculate(players[1],scores);
 	}
 	void calculateScore(Segment s){
 		List<Card> cards = s.segment.getCardList();
