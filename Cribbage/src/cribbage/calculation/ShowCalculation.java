@@ -21,9 +21,8 @@ public class ShowCalculation extends Calculation{
         if(Cribbage.Rule.JACK.score != 0){
             jack.calculate(player, scores);
         }
-        if(Cribbage.Rule.FLUSH4.score != 0){
-            flush.calculate(player, scores);
-        }
+        flush.calculate(player, scores);
+
         // combine the starter and hand
         hand.insert(newCard.clone(), false);
         CalculatePairShow pair = new CalculatePairShow(hand);

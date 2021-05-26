@@ -21,21 +21,24 @@ public class CalculateFlush extends Calculation {
         Cribbage.Suit suits[] = Cribbage.Suit.values();
         ArrayList<String> strings = new ArrayList<>();
         for(Cribbage.Suit suit : suits){
-            if(hand.getNumberOfCardsWithSuit(suit) > 3){
+            if(hand.getNumberOfCardsWithSuit(suit) > 3) {
                 extract = hand.extractCardsWithSuit(suit);
                 // check if starter card also got same suit
-                if(starter.getNumberOfCardsWithSuit(suit) == 1){
+                if (starter.getNumberOfCardsWithSuit(suit) == 1 && Cribbage.Rule.FLUSH5.score != 0) {
                     scores[player.getId()] += Cribbage.Rule.FLUSH5.score;
-                    for (Card c : extract.getCardList()){
+                    for (Card c : extract.getCardList()) {
                         strings.add(canonical(c));
                     }
-                    Logging.getInstance().addToLog(String.format("score,P%d,%d,%d,flush5,%s",player.getId(),scores[player.getId()],Cribbage.Rule.FLUSH5.score,strings.toString().replaceAll(" ", "")));
+                    Logging.getInstance().addToLog(String.format("score,P%d,%d,%d,flush5,%s", player.getId(), scores[player.getId()], Cribbage.Rule.FLUSH5.score, strings.toString().replaceAll(" ", "")));
+                    continue;
                 }
-                for (Card c : extract.getCardList()){
+                for (Card c : extract.getCardList()) {
                     strings.add(canonical(c));
                 }
-                scores[player.getId()] += Cribbage.Rule.FLUSH4.score;
-                Logging.getInstance().addToLog(String.format("score,P%d,%d,%d,flush4,%s",player.getId(),scores[player.getId()],Cribbage.Rule.FLUSH4.score,strings.toString().replaceAll(" ", "")));
+                if (Cribbage.Rule.FLUSH4.score != 0) {
+                    scores[player.getId()] += Cribbage.Rule.FLUSH4.score;
+                    Logging.getInstance().addToLog(String.format("score,P%d,%d,%d,flush4,%s", player.getId(), scores[player.getId()], Cribbage.Rule.FLUSH4.score, strings.toString().replaceAll(" ", "")));
+                }
             }
         }
     }
