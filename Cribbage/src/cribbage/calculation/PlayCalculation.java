@@ -1,6 +1,7 @@
 package cribbage.calculation;
 
 import ch.aplu.jcardgame.Hand;
+import cribbage.Cribbage;
 import cribbage.IPlayer;
 import cribbage.calculation.CalculatePairPlay;
 import cribbage.calculation.CalculateRunPlay;

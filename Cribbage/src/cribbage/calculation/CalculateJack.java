@@ -14,12 +14,13 @@ public class CalculateJack extends Calculation {
     }
 
     @Override
+    // check if player have a same suit JACK with starter
     public void calculate(IPlayer player, int[] scores) {
         Enum start = starter.getCardList().get(0).getSuit();
         Card jack = hand.getCard(start, Cribbage.Rank.JACK);
         if(jack != null){
-            scores[player.getId()] += 1;
-            Logging.getInstance().addToLog(String.format("score,P%d,%d,1,jack,[%s]",player.getId(),scores[player.getId()],canonical(jack)));
+            scores[player.getId()] += Cribbage.Rule.JACK.score;
+            Logging.getInstance().addToLog(String.format("score,P%d,%d,%d,jack,[%s]",player.getId(),scores[player.getId()],Cribbage.Rule.JACK.score,canonical(jack)));
         }
     }
 

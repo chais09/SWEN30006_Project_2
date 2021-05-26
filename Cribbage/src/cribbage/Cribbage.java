@@ -18,7 +18,15 @@ import java.util.stream.Stream;
 
 public class Cribbage extends CardGame {
 	static Cribbage cribbage;  // Provide access to singleton
-
+	// enum Rule make the rule of game be configurable, if you wanna to eliminate some rule, just set the score to be 0
+	public enum Rule {
+		PAIR2(2), PAIR3(6),PAIR4(12), RUN3(3),RUN4(4),RUN5(5),RUN6(6),RUN7(7),
+		FLUSH4(4),FLUSH5(5), JACK(1), FIFTEEN(2), STARTER(2), THIRTYONE(2), GO(1);
+		public int score;
+		Rule(int score) {
+			this.score = score;
+		}
+	}
 	public enum Suit {
 		CLUBS, DIAMONDS, HEARTS, SPADES
 	}
@@ -194,6 +202,7 @@ public class Cribbage extends CardGame {
 				cards.insert(card.clone(),false);
 				transfer(card, crib);
 			}
+			// log the discarded card
 			Logging.getInstance().addToLog(String.format("discard,P%d,%s",player.id,canonical(cards)));
 			cards = new Hand(deck);
 			crib.sort(Hand.SortType.POINTPRIORITY, true);
@@ -215,10 +224,12 @@ public class Cribbage extends CardGame {
 		starter.setView(this, layout);
 		starter.draw();
 		Card dealt = randomCard(pack);
+		// log starter card
 		Logging.getInstance().addToLog(String.format("starter,%s",canonical(dealt)));
-		if (dealt.getRank().compareTo(Rank.JACK) == 0){
-			scores[1] += 2;
-			Logging.getInstance().addToLog(String.format("score,P1,%d,2,starter,[%s]",scores[1],canonical(dealt)));
+		// check if starter card is JACK
+		if (dealt.getRank().compareTo(Rank.JACK) == 0 && Rule.STARTER.score != 0){
+			scores[1] += Rule.STARTER.score;
+			Logging.getInstance().addToLog(String.format("score,P1,%d,%d,starter,[%s]",scores[1],Rule.STARTER.score,canonical(dealt)));
 		}
 		dealt.setVerso(false);
 		transfer(dealt, starter);
@@ -258,14 +269,16 @@ public class Cribbage extends CardGame {
 			Card nextCard = players[currentPlayer].lay(thirtyone-total(s.segment));
 
 			if (nextCard == null) {
-
+				System.out.println("ssssssssssssssssssssssssssssssssssssssssssssssssss");
 				if (s.go) {
+					System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 					// Another "go" after previous one with no intervening cards
 					// lastPlayer gets 1 point for a "go"
-
-					scores[currentPlayer] += 1;
-					Logging.getInstance().addToLog(String.format("score,P%d,%d,1,go",currentPlayer,scores[currentPlayer]));
-					updateScore(currentPlayer);
+					if (Rule.GO.score != 0){
+						scores[currentPlayer] += Rule.GO.score;
+						Logging.getInstance().addToLog(String.format("score,P%d,%d,%d,go", currentPlayer, scores[currentPlayer],Rule.GO.score));
+						updateScore(currentPlayer);
+					}
 					s.newSegment = true;
 				} else {
 					// currentPlayer says "go"
@@ -283,14 +296,16 @@ public class Cribbage extends CardGame {
 				updateScore(currentPlayer);
 				if (total(s.segment) == thirtyone) {
 					// lastPlayer gets 2 points for a 31
-					scores[currentPlayer] += 2;
-					Logging.getInstance().addToLog(String.format("score,P%d,%d,2,thirtyone",currentPlayer,scores[currentPlayer]));
+					if(Rule.THIRTYONE.score != 0) {
+						scores[currentPlayer] += Rule.THIRTYONE.score;
+						Logging.getInstance().addToLog(String.format("score,P%d,%d,%d,thirtyone", currentPlayer, scores[currentPlayer],Rule.THIRTYONE.score));
+					}
 					s.newSegment = true;
 					currentPlayer = (currentPlayer+1) % 2;
 				} else {
-					if (total(s.segment) == 15){
-						scores[currentPlayer] += 2;
-						Logging.getInstance().addToLog(String.format("score,P%d,%d,2,fifteen",currentPlayer,scores[currentPlayer]));
+					if (total(s.segment) == 15 && Rule.THIRTYONE.score != 0){
+						scores[currentPlayer] += Rule.THIRTYONE.score;
+						Logging.getInstance().addToLog(String.format("score,P%d,%d,%d,fifteen",currentPlayer,scores[currentPlayer],Rule.THIRTYONE.score));
 					}
 					if (!s.go) { // if it is "go" then same player gets another turn
 						currentPlayer = (currentPlayer+1) % 2;
@@ -306,20 +321,21 @@ public class Cribbage extends CardGame {
 			}
 
 		}
-		if(total(s.segment) != thirtyone || total(s.segment) != 15) {
-			currentPlayer = (currentPlayer + 1) % 2;
-			scores[currentPlayer] += 1;
-			Logging.getInstance().addToLog(String.format("score,P%d,%d,1,go", currentPlayer, scores[currentPlayer]));
+		// make sure player will got one mark in the last turn even the value is not thirty-one
+		currentPlayer = (currentPlayer + 1) % 2;
+		if(total(s.segment) != 0 && Rule.GO.score != 0) {
+			scores[currentPlayer] += Rule.GO.score;
+			Logging.getInstance().addToLog(String.format("score,P%d,%d,%d,go", currentPlayer, scores[currentPlayer],Rule.GO.score));
 			updateScore(currentPlayer);
 		}
 
 	}
 
 	void showHandsCrib() {
+		// score player 0 (non dealer)
 		Logging.getInstance().addToLog(String.format("show,P0,%s+%s", canonical(starter.getFirst()), canonical(initHands[0])));
 		ShowCalculation showPlayerZero =  new ShowCalculation(initHands[0], starter);
 		showPlayerZero.calculate(players[0], scores);
-		// score player 0 (non dealer)
 		// score player 1 (dealer)
 		Logging.getInstance().addToLog(String.format("show,P1,%s+%s", canonical(starter.getFirst()), canonical(initHands[1])));
 		ShowCalculation showPlayerOne =  new ShowCalculation(initHands[1], starter);
@@ -352,6 +368,7 @@ public class Cribbage extends CardGame {
 
 	  /* Play the round */
 	  deal(pack, hands);
+	  // log hand for each player
 	  Logging.getInstance().addToLog(String.format("deal,P0,%s",canonical(hands[0])));
 	  Logging.getInstance().addToLog(String.format("deal,P1,%s",canonical(hands[1])));
 	  discardToCrib();
@@ -395,6 +412,7 @@ public class Cribbage extends CardGame {
 			  SEED = new Random().nextInt(); // so randomise
 		  }
 	  }
+	  // log seed
 	  Logging.getInstance().addToLog(String.format("seed,%d",SEED));
 	  random = new Random(SEED);
 
@@ -404,9 +422,10 @@ public class Cribbage extends CardGame {
 	  players[0] = (IPlayer) clazz.getConstructor().newInstance();
 	  clazz = Class.forName(cribbageProperties.getProperty("Player1"));
 	  players[1] = (IPlayer) clazz.getConstructor().newInstance();
-	  // End properties
+	  // log player properties
 	  Logging.getInstance().addToLog(String.format("%s,P0",cribbageProperties.getProperty("Player0")));
 	  Logging.getInstance().addToLog(String.format("%s,P1",cribbageProperties.getProperty("Player1")));
+	  // End properties
 	  new Cribbage();
 
   }

@@ -16,8 +16,6 @@ public class CalculateFifteen extends Calculation {
 
     @Override
     public void calculate(IPlayer player, int[] scores) {
-
-        int score = 0;
         final int aimNumber = 15;
         ArrayList<String> strings = new ArrayList<>();
         ArrayList<Card> current = new ArrayList<>();
@@ -34,14 +32,14 @@ public class CalculateFifteen extends Calculation {
                     String s = String.format("%s", super.canonical(card));
                     strings.add(s);
                 }
-                score += 2;
-                scores[player.getId()] += 2;
-                String format = String.format("score,P%d,%d,%d,fifteen,%s",player.getId(),scores[player.getId()],strings.size(),strings.toString().replaceAll(" ", ""));
+                scores[player.getId()] += Cribbage.Rule.FIFTEEN.score;
+                String format = String.format("score,P%d,%d,%d,fifteen,%s",player.getId(),scores[player.getId()],Cribbage.Rule.FIFTEEN.score,strings.toString().replaceAll(" ", ""));
                 Logging.getInstance().addToLog(format);
                 strings.clear();
             }
         }
     }
+    // find all possible combination of a hand
     private void findCombinations(ArrayList<Card> input, ArrayList<Card> current,ArrayList<ArrayList<Card>> result
             , int i, int n, int k) {
         if (k > n) {

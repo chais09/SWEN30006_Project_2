@@ -12,7 +12,7 @@ public abstract class IPlayer {
     void setId(int id)  {
         this.id = id;
     }
-    //generate a getter of player id
+    //generate a getter of player id cause we need to use it in our 'calculation' package
     public int getId(){
         return id;
     }

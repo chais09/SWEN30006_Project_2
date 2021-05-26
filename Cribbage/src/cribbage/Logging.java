@@ -16,7 +16,7 @@ public class  Logging {
         }
     }
 
-    public static Logging getInstance(){
+    public static synchronized Logging getInstance(){
         if (_instance == null){
             _instance = new Logging();
         }

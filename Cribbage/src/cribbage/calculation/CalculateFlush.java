@@ -23,18 +23,19 @@ public class CalculateFlush extends Calculation {
         for(Cribbage.Suit suit : suits){
             if(hand.getNumberOfCardsWithSuit(suit) > 3){
                 extract = hand.extractCardsWithSuit(suit);
+                // check if starter card also got same suit
                 if(starter.getNumberOfCardsWithSuit(suit) == 1){
-                    scores[player.getId()] += 5;
+                    scores[player.getId()] += Cribbage.Rule.FLUSH5.score;
                     for (Card c : extract.getCardList()){
                         strings.add(canonical(c));
                     }
-                    Logging.getInstance().addToLog(String.format("score,P%d,%d,5,flush5,%s",player.getId(),scores[player.getId()],strings.toString().replaceAll(" ", "")));
+                    Logging.getInstance().addToLog(String.format("score,P%d,%d,%d,flush5,%s",player.getId(),scores[player.getId()],Cribbage.Rule.FLUSH5.score,strings.toString().replaceAll(" ", "")));
                 }
                 for (Card c : extract.getCardList()){
                     strings.add(canonical(c));
                 }
-                scores[player.getId()] += 4;
-                Logging.getInstance().addToLog(String.format("score,P%d,%d,4,flush4,%s",player.getId(),scores[player.getId()],strings.toString().replaceAll(" ", "")));
+                scores[player.getId()] += Cribbage.Rule.FLUSH4.score;
+                Logging.getInstance().addToLog(String.format("score,P%d,%d,%d,flush4,%s",player.getId(),scores[player.getId()],Cribbage.Rule.FLUSH4.score,strings.toString().replaceAll(" ", "")));
             }
         }
     }
