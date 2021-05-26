@@ -1,7 +1,9 @@
-package cribbage;
+package cribbage.calculation;
 
 import ch.aplu.jcardgame.Card;
 import ch.aplu.jcardgame.Hand;
+import cribbage.Cribbage;
+import cribbage.IPlayer;
 
 import java.util.stream.Collectors;
 
@@ -13,7 +15,7 @@ public abstract class Calculation {
         this.hand = hand;
     }
 
-    public abstract int calculate(IPlayer player, int[] scores);
+    public abstract void calculate(IPlayer player, int[] scores);
     public String canonical(Cribbage.Suit s) { return s.toString().substring(0, 1); }
 
     public String canonical(Cribbage.Rank r) {

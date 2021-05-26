@@ -12,17 +12,19 @@ public abstract class IPlayer {
     void setId(int id)  {
         this.id = id;
     }
+    //generate a getter of player id
+    public int getId(){
+        return id;
+    }
     void startSegment(Deck deck, Hand hand) {this.deck = deck; this.hand = hand;}
     abstract Card discard();
     boolean emptyHand() {return hand.isEmpty();}
     abstract Card selectToLay();
     Card lay(int limit) {
-        // System.out.println("lay(" + limit + ")");
         Hand unlayable = new Hand(deck);
         for (Card c: ((ArrayList<Card>) hand.getCardList().clone()))  // Modify list, so need to iterate over clone
             if (Cribbage.cardValue(c) > limit) {
                 c.removeFromHand(true);
-                // System.out.println("hand = " + hand.toString());
                 unlayable.insert(c, false);
             }
         // hand.draw(); Cribbage.delay(1000);

@@ -1,23 +1,28 @@
-package cribbage;
+
+package cribbage.calculation;
 
 import ch.aplu.jcardgame.Card;
 import ch.aplu.jcardgame.Hand;
+import cribbage.Cribbage;
+import cribbage.IPlayer;
+import cribbage.Logging;
 
 import java.util.ArrayList;
 
-public class CalculateFifteen extends Calculation{
+public class CalculateFifteen extends Calculation {
     public CalculateFifteen(Hand hand){
         super(hand);
     }
 
     @Override
-    public int calculate(IPlayer player, int[] scores) {
+    public void calculate(IPlayer player, int[] scores) {
 
         int score = 0;
         final int aimNumber = 15;
         ArrayList<String> strings = new ArrayList<>();
         ArrayList<Card> current = new ArrayList<>();
         ArrayList<Card> input = new ArrayList<>();
+        hand.sort(Hand.SortType.POINTPRIORITY, false);
         for(Card card : hand.getCardList()){
             input.add(card);
         }
@@ -30,12 +35,12 @@ public class CalculateFifteen extends Calculation{
                     strings.add(s);
                 }
                 score += 2;
-                scores[player.id] += 2;
-                String format = String.format("score,P%d,%d,%d,fifteen,%s",player.id,scores[player.id],strings.size(),strings);
+                scores[player.getId()] += 2;
+                String format = String.format("score,P%d,%d,%d,fifteen,%s",player.getId(),scores[player.getId()],strings.size(),strings.toString().replaceAll(" ", ""));
                 Logging.getInstance().addToLog(format);
+                strings.clear();
             }
         }
-        return score;
     }
     private void findCombinations(ArrayList<Card> input, ArrayList<Card> current,ArrayList<ArrayList<Card>> result
             , int i, int n, int k) {
@@ -56,7 +61,7 @@ public class CalculateFifteen extends Calculation{
     private int sum(ArrayList<Card> in){
         int result = 0;
         for(Card i : in){
-            result += i.getValue();
+            result += Cribbage.cardValue(i);
         }
         return result;
     }

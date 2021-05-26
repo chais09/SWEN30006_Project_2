@@ -4,6 +4,8 @@ package cribbage;
 
 import ch.aplu.jcardgame.*;
 import ch.aplu.jgamegrid.*;
+import cribbage.calculation.PlayCalculation;
+import cribbage.calculation.ShowCalculation;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -32,7 +34,7 @@ public class Cribbage extends CardGame {
 		}
 	}
 
-	static int cardValue(Card c) { return ((Cribbage.Rank) c.getRank()).value; }
+	public static int cardValue(Card c) { return ((Cribbage.Rank) c.getRank()).value; }
 
 	/*
 	Canonical String representations of Suit, Rank, Card, and Hand
@@ -196,7 +198,6 @@ public class Cribbage extends CardGame {
 			cards = new Hand(deck);
 			crib.sort(Hand.SortType.POINTPRIORITY, true);
 		}
-		System.out.println(hands[0]);
 		for (int i = 0; i < nPlayers; i++) {
 			initHands[i] = new Hand(deck);
 			for(Card c : hands[i].getCardList()){
@@ -214,8 +215,14 @@ public class Cribbage extends CardGame {
 		starter.setView(this, layout);
 		starter.draw();
 		Card dealt = randomCard(pack);
+		Logging.getInstance().addToLog(String.format("starter,%s",canonical(dealt)));
+		if (dealt.getRank().compareTo(Rank.JACK) == 0){
+			scores[1] += 2;
+			Logging.getInstance().addToLog(String.format("score,P1,%d,2,starter,[%s]",scores[1],canonical(dealt)));
+		}
 		dealt.setVerso(false);
 		transfer(dealt, starter);
+		updateScore(1);
 	}
 
 	int total(Hand hand) {
@@ -248,7 +255,6 @@ public class Cribbage extends CardGame {
 		s.reset(segments);
 		int value = 0;
 		while (!(players[0].emptyHand() && players[1].emptyHand())) {
-			// System.out.println("segments.size() = " + segments.size());
 			Card nextCard = players[currentPlayer].lay(thirtyone-total(s.segment));
 
 			if (nextCard == null) {
@@ -301,7 +307,6 @@ public class Cribbage extends CardGame {
 
 		}
 		if(total(s.segment) != thirtyone || total(s.segment) != 15) {
-			System.out.println(s.segment);
 			currentPlayer = (currentPlayer + 1) % 2;
 			scores[currentPlayer] += 1;
 			Logging.getInstance().addToLog(String.format("score,P%d,%d,1,go", currentPlayer, scores[currentPlayer]));
@@ -311,19 +316,20 @@ public class Cribbage extends CardGame {
 	}
 
 	void showHandsCrib() {
+		Logging.getInstance().addToLog(String.format("show,P0,%s+%s", canonical(starter.getFirst()), canonical(initHands[0])));
 		ShowCalculation showPlayerZero =  new ShowCalculation(initHands[0], starter);
 		showPlayerZero.calculate(players[0], scores);
 		// score player 0 (non dealer)
 		// score player 1 (dealer)
+		Logging.getInstance().addToLog(String.format("show,P1,%s+%s", canonical(starter.getFirst()), canonical(initHands[1])));
 		ShowCalculation showPlayerOne =  new ShowCalculation(initHands[1], starter);
 		showPlayerOne.calculate(players[1], scores);
 		// score crib (for dealer)
+		Logging.getInstance().addToLog(String.format("show,P1,%s+%s", canonical(starter.getFirst()), canonical(crib)));
 		ShowCalculation showPlayerDealer =  new ShowCalculation(crib,starter);
 		showPlayerDealer.calculate(players[1],scores);
-	}
-	void calculateScore(Segment s){
-		List<Card> cards = s.segment.getCardList();
-
+		updateScore(0);
+		updateScore(1);
 	}
 
 
@@ -349,9 +355,7 @@ public class Cribbage extends CardGame {
 	  Logging.getInstance().addToLog(String.format("deal,P0,%s",canonical(hands[0])));
 	  Logging.getInstance().addToLog(String.format("deal,P1,%s",canonical(hands[1])));
 	  discardToCrib();
-
 	  starter(pack);
-	  Logging.getInstance().addToLog(String.format("starter,%s",canonical(starter)));
 	  play();
 	  showHandsCrib();
 
@@ -365,7 +369,6 @@ public class Cribbage extends CardGame {
 		  throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException,
 		  	InstantiationException, IllegalAccessException {
 	  /* Handle Properties */
-	  // System.out.println("Working Directory = " + System.getProperty("user.dir"));
 	  Properties cribbageProperties = new Properties();
 	  // Default properties
 	  cribbageProperties.setProperty("Animate", "true");
