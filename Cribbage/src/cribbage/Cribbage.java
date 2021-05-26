@@ -269,9 +269,7 @@ public class Cribbage extends CardGame {
 			Card nextCard = players[currentPlayer].lay(thirtyone-total(s.segment));
 
 			if (nextCard == null) {
-				System.out.println("ssssssssssssssssssssssssssssssssssssssssssssssssss");
 				if (s.go) {
-					System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 					// Another "go" after previous one with no intervening cards
 					// lastPlayer gets 1 point for a "go"
 					if (Rule.GO.score != 0){
