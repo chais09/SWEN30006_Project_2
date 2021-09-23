@@ -16,10 +16,17 @@
       ]
     },
     {
+      all-contributors/add-allanz0303
+      "login": "allanz0303",
+      "name": "Jingwei",
+      "avatar_url": "https://avatars.githubusercontent.com/u/77386438?v=4",
+      "profile": "https://github.com/allanz0303",
+
       "login": "rezhang1128",
       "name": "rezhang1128",
       "avatar_url": "https://avatars.githubusercontent.com/u/82085953?v=4",
       "profile": "https://github.com/rezhang1128",
+      master
       "contributions": [
         "code",
         "design",
