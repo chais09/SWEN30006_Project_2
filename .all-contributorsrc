@@ -29,7 +29,9 @@
       master
       "contributions": [
         "code",
-        "design"
+        "design",
+        "test",
+        "content"
       ]
     }
   ],
