@@ -22,9 +22,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://chais09.github.io"><img src="https://avatars.githubusercontent.com/u/55682227?v=4?s=100" width="100px;" alt=""/><br /><sub><b>chais09</b></sub></a><br /><a href="https://github.com/chais09/SWEN30006_Project_2/commits?author=chais09" title="Code">💻</a> <a href="#design-chais09" title="Design">🎨</a></td>
-    <td align="center"><a href="https://github.com/rezhang1128"><img src="https://avatars.githubusercontent.com/u/82085953?v=4?s=100" width="100px;" alt=""/><br /><sub><b>rezhang1128</b></sub></a><br /><a href="https://github.com/chais09/SWEN30006_Project_2/commits?author=rezhang1128" title="Code">💻</a> <a href="#design-rezhang1128" title="Design">🎨</a> <a href="https://github.com/chais09/SWEN30006_Project_2/commits?author=rezhang1128" title="Tests">⚠️</a> <a href="#content-rezhang1128" title="Content">🖋</a></td>
+    <td align="center"><a href="https://github.com/rezhang1128"><img src="https://avatars.githubusercontent.com/u/82085953?v=4?s=100" width="100px;" alt=""/><br /><sub><b>rezhang1128</b></sub></a><br /><a href="https://github.com/chais09/SWEN30006_Project_2/commits?author=rezhang1128" title="Code">💻</a> <a href="#design-rezhang1128" title="Design">🎨</a></td>
     <td align="center"><a href="https://github.com/allanz0303"><img src="https://avatars.githubusercontent.com/u/77386438?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jingwei</b></sub></a><br /><a href="https://github.com/chais09/SWEN30006_Project_2/commits?author=allanz0303" title="Code">💻</a> <a href="#design-allanz0303" title="Design">🎨</a></td>
-master
+
   </tr>
 </table>
 
